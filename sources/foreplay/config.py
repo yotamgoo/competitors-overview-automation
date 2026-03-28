@@ -1,12 +1,17 @@
-"""Foreplay Spyder Winners Extractor — configuration."""
+"""Foreplay Spyder Winners Extractor configuration."""
 
-from datetime import datetime, timezone, timedelta
+from __future__ import annotations
+
+from datetime import datetime, timedelta, timezone
+
 
 API_BASE = "https://api.foreplay.co"
 PAGE_SIZE = 100
 LOOKBACK_MONTHS = 3
 MAX_RETRIES = 3
-RATE_LIMIT_BUFFER = 5  # sleep when remaining requests drop to this
+RATE_LIMIT_BUFFER = 5  # Sleep when remaining requests drop to this threshold.
+
+DEFAULT_USER_AGENT = "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
 
 DEFAULT_HEADERS = {
     "accept": "application/json, text/plain, */*",
@@ -18,15 +23,10 @@ DEFAULT_HEADERS = {
     "referer": "https://app.foreplay.co/",
     "sec-ch-ua": '"Chromium";v="146", "Not-A.Brand";v="24", "Google Chrome";v="146"',
     "sec-ch-ua-mobile": "?0",
-    "sec-ch-ua-platform": '"Windows"',
     "sec-fetch-dest": "empty",
     "sec-fetch-mode": "cors",
     "sec-fetch-site": "same-site",
-    "user-agent": (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/146.0.0.0 Safari/537.36"
-    ),
+    "user-agent": DEFAULT_USER_AGENT,
 }
 
 

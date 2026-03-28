@@ -1,10 +1,12 @@
-"""AdPlexity Extractor — configuration."""
+"""AdPlexity Extractor configuration."""
 
 API_BASE = "https://app.adplexity.io"
 
 PAGE_SIZE = 50
 MAX_RETRIES = 3
-RATE_LIMIT_SLEEP = 1.0  # seconds between ad-detail requests
+RATE_LIMIT_SLEEP = 1.0  # Seconds between ad-detail requests.
+
+DEFAULT_USER_AGENT = "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
 
 DEFAULT_HEADERS = {
     "accept": "application/json",
@@ -14,9 +16,5 @@ DEFAULT_HEADERS = {
     "origin": "https://app.adplexity.io",
     "pragma": "no-cache",
     "x-requested-with": "XMLHttpRequest",
-    "user-agent": (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/146.0.0.0 Safari/537.36"
-    ),
+    "user-agent": DEFAULT_USER_AGENT,
 }

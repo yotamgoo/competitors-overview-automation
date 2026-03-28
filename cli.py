@@ -25,7 +25,7 @@ from dashboard import build_dashboard, serve_dashboard
 from intelligence_db import IntelligenceDatabase
 from unified_extractors import extract_adplexity, extract_foreplay, extract_meta_batch, extract_meta_page
 
-if hasattr(sys.stdout, "reconfigure"):  # pragma: no branch - runtime safeguard for Windows terminals
+if hasattr(sys.stdout, "reconfigure"):  # pragma: no branch - runtime safeguard for UTF-8 output
     sys.stdout.reconfigure(encoding="utf-8")
 
 
@@ -229,11 +229,6 @@ def cmd_dashboard(args: argparse.Namespace) -> int:
             port=args.port,
         )
     return 0
-
-
-def truncate(value: str, limit: int) -> str:
-    text = value or ""
-    return text if len(text) <= limit else text[: limit - 1] + "…"
 
 
 def truncate(value: str, limit: int) -> str:
