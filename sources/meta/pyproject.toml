@@ -1,0 +1,11 @@
+[project]
+name = "meta-ads-scraper"
+version = "0.2.0"
+description = "Meta Ad Library scraper with local SQLite storage"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "requests>=2.32.5",
+    "selenium>=4.41.0",
+    "webdriver-manager>=4.0.2",
+]
