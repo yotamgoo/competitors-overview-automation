@@ -558,6 +558,7 @@ def scrape_ads(
     base_dir: Path,
     log: Callable[[str], None],
     page_id: str = "",
+    download_media_files: bool = False,
 ) -> List[AdRecord]:
     if not search_query.strip() and not page_id.strip():
         raise ValueError("Either search query or page_id is required.")
@@ -616,7 +617,9 @@ def scrape_ads(
         # Build sprite icon map (platforms/categories) via hover tooltips
         icon_map = build_icon_map(driver, log=log)
 
-        session = build_requests_session(driver)
+        session = build_requests_session(driver) if download_media_files else None
+        if not download_media_files:
+            log("Media download disabled; storing direct media URLs.")
         stagnation = 0
 
         for _ in range(40):
@@ -659,19 +662,22 @@ def scrape_ads(
                     stats["missing_media_url"] += 1
                     continue
 
-                try:
-                    media_path = download_media(
-                        session=session,
-                        media_url=media_url,
-                        media_type=media_type,
-                        library_id=library_id,
-                        base_dir=base_dir,
-                        log=log,
-                    )
-                except Exception as exc:
-                    stats["download_failed"] += 1
-                    log(f"Skip {library_id}: failed to download media ({exc})")
-                    continue
+                if download_media_files and session is not None:
+                    try:
+                        media_path = download_media(
+                            session=session,
+                            media_url=media_url,
+                            media_type=media_type,
+                            library_id=library_id,
+                            base_dir=base_dir,
+                            log=log,
+                        )
+                    except Exception as exc:
+                        stats["download_failed"] += 1
+                        log(f"Skip {library_id}: failed to download media ({exc})")
+                        continue
+                else:
+                    media_path = media_url
 
                 ad_link = f"https://www.facebook.com/ads/library/?id={library_id}"
                 record = AdRecord(

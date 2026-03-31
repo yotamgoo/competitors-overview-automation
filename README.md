@@ -12,6 +12,7 @@ The project writes everything into one normalized SQLite database and gives you:
 - a keyword-based vertical classifier
 - a dark-theme HTML dashboard
 - a local dashboard app mode that can trigger extraction jobs
+- an in-progress TypeScript/Node/React migration for Google AI Studio constraints
 
 ## Quick Start
 
@@ -44,6 +45,42 @@ python cli.py dashboard --serve
 The dashboard will usually be available at:
 
 - `http://127.0.0.1:8050/db/intelligence_dashboard.html`
+
+## TypeScript Migration Scaffold
+
+The repo now also includes a parallel TypeScript stack under:
+
+- `apps/server`
+- `apps/web`
+- `packages/shared`
+
+This migration path is aimed at Google AI Studio and other environments where a Node/React app is easier to host than the current Python app.
+
+Current TypeScript status:
+
+- shared contracts, settings normalization, and classifier rules are ported
+- the Node server persists settings and serves a real dashboard payload from `db/intelligence.json`
+- the React app mirrors the control-panel/dashboard structure
+- extractor routes are still being ported, starting with Foreplay
+
+Typical TypeScript env additions:
+
+- `INTELLIGENCE_DATA_PATH=db/intelligence.json`
+- `INTELLIGENCE_DASHBOARD_SETTINGS_PATH=db/dashboard_settings.json`
+- `PYTHON_EXECUTABLE=python3` on macOS/Linux, or `python` on Windows if needed
+
+Planned commands once Node dependencies are installed:
+
+```bash
+npm install
+npm run dev
+```
+
+For the single-app packaged flow, build the React app and let the Node server serve it:
+
+```bash
+npm run app
+```
 
 ## Core Commands
 

@@ -45,6 +45,7 @@ def scrape_and_store(
     min_days: int = 30,
     media_type: str = "both",
     max_ads: int = 50,
+    download_media_files: bool = False,
     db_path: str = "ads.db",
     base_dir: Path = None,
     log: Callable[[str], None] = print,
@@ -67,6 +68,7 @@ def scrape_and_store(
         base_dir=base_dir,
         log=log,
         page_id=page_id,
+        download_media_files=download_media_files,
     )
 
     ads = [_record_to_db_dict(r, advertiser) for r in records]
@@ -83,6 +85,7 @@ def batch_scrape(
     min_days: int = 30,
     media_type: str = "both",
     max_ads: int = 50,
+    download_media_files: bool = False,
     base_dir: Path = None,
     log: Callable[[str], None] = print,
 ) -> Dict[str, int]:
@@ -111,6 +114,7 @@ def batch_scrape(
                 min_days=min_days,
                 media_type=media_type,
                 max_ads=max_ads,
+                download_media_files=download_media_files,
                 db_path=db_path,
                 base_dir=base_dir,
                 log=log,

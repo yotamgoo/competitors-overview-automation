@@ -30,6 +30,7 @@ def cmd_scrape(args):
         min_days=args.min_days,
         media_type=args.media,
         max_ads=args.max_ads,
+        download_media_files=args.download_media,
         db_path=args.db,
     )
 
@@ -41,6 +42,7 @@ def cmd_batch(args):
         min_days=args.min_days,
         media_type=args.media,
         max_ads=args.max_ads,
+        download_media_files=args.download_media,
     )
 
 
@@ -108,6 +110,18 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--media", choices=["image", "video", "both"], default="both")
     p.add_argument("--max-ads", type=int, default=50, help="Max ads to collect (default: 50)")
     p.add_argument("--db", default="ads.db", help="Database path (default: ads.db)")
+    p.add_argument(
+        "--download-media",
+        action="store_true",
+        help="Download media files locally instead of storing direct media URLs.",
+    )
+    p.add_argument(
+        "--no-download-media",
+        dest="download_media",
+        action="store_false",
+        help="Store direct media URLs only (faster; default).",
+    )
+    p.set_defaults(download_media=False)
 
     # batch
     p = sub.add_parser("batch", help="Scrape all advertisers in the database")
@@ -116,6 +130,18 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--media", choices=["image", "video", "both"], default="both")
     p.add_argument("--max-ads", type=int, default=50)
     p.add_argument("--db", default="ads.db")
+    p.add_argument(
+        "--download-media",
+        action="store_true",
+        help="Download media files locally instead of storing direct media URLs.",
+    )
+    p.add_argument(
+        "--no-download-media",
+        dest="download_media",
+        action="store_false",
+        help="Store direct media URLs only (faster; default).",
+    )
+    p.set_defaults(download_media=False)
 
     # seed
     p = sub.add_parser("seed", help="Bulk load advertisers from CSV")

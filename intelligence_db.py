@@ -6,7 +6,7 @@ import csv
 import json
 import sqlite3
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Sequence
 from urllib.parse import urlparse
@@ -330,7 +330,7 @@ class IntelligenceDatabase:
 
 
 def now_iso() -> str:
-    return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
 def normalize_source(value: str) -> str:
@@ -364,16 +364,16 @@ def normalize_datetime(value: Any) -> str | None:
     if isinstance(value, datetime):
         dt = value
         if dt.tzinfo is None:
-            dt = dt.replace(tzinfo=UTC)
+            dt = dt.replace(tzinfo=timezone.utc)
         else:
-            dt = dt.astimezone(UTC)
+            dt = dt.astimezone(timezone.utc)
         return dt.replace(microsecond=0).isoformat().replace("+00:00", "Z")
     if isinstance(value, (int, float)):
         raw = int(value)
         if raw > 1_000_000_000_000:
-            dt = datetime.fromtimestamp(raw / 1000, tz=UTC)
+            dt = datetime.fromtimestamp(raw / 1000, tz=timezone.utc)
         elif raw > 1_000_000_000:
-            dt = datetime.fromtimestamp(raw, tz=UTC)
+            dt = datetime.fromtimestamp(raw, tz=timezone.utc)
         else:
             return None
         return dt.replace(microsecond=0).isoformat().replace("+00:00", "Z")
@@ -388,7 +388,7 @@ def normalize_datetime(value: Any) -> str | None:
     for fmt in ("%Y-%m-%d", "%Y-%m-%d %H:%M:%S", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%dT%H:%M:%SZ"):
         try:
             parsed = datetime.strptime(text, fmt)
-            parsed = parsed.replace(tzinfo=UTC)
+            parsed = parsed.replace(tzinfo=timezone.utc)
             return parsed.isoformat().replace("+00:00", "Z")
         except ValueError:
             continue
@@ -399,9 +399,9 @@ def normalize_datetime(value: Any) -> str | None:
         return text
 
     if parsed.tzinfo is None:
-        parsed = parsed.replace(tzinfo=UTC)
+        parsed = parsed.replace(tzinfo=timezone.utc)
     else:
-        parsed = parsed.astimezone(UTC)
+        parsed = parsed.astimezone(timezone.utc)
     return parsed.replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 

@@ -1,0 +1,26 @@
+{
+  "name": "competitors-overview-automation-ts",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build:shared": "npm --workspace @competitors/shared run build",
+    "build:server": "npm --workspace @competitors/server run build",
+    "build:web": "npm --workspace @competitors/web run build",
+    "build": "npm run build:shared && npm run build:server && npm run build:web",
+    "typecheck": "npm run build:shared && npm --workspace @competitors/server run typecheck && npm --workspace @competitors/web run typecheck",
+    "dev:server": "npm run build:shared && npm --workspace @competitors/server run dev",
+    "dev:web": "npm run build:shared && npm --workspace @competitors/web run dev",
+    "dev": "concurrently -n server,web -c cyan,magenta \"npm run dev:server\" \"npm run dev:web\"",
+    "app:build": "npm run build",
+    "app:start": "npm --workspace @competitors/server run start",
+    "app": "npm run app:build && npm run app:start"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "typescript": "^5.8.3"
+  }
+}
